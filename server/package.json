@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "start:dev": "nodemon src/index.ts",
+    "start:dev": "nodemon --files src/index.ts",
     "prepare": "husky install",
     "lint:write": "eslint src/ --fix --quiet",
     "lint": "eslint src/",
@@ -17,11 +17,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/underscore": "^1.11.15",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/joi": "^17.2.3",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "eslint-config-prettier": "^9.1.0",
