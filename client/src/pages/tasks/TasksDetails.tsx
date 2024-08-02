@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { TasksType } from '../../types/tasks';
 import { CustomToastContext } from '../../context/CustomToast';
@@ -32,9 +33,11 @@ import { TasksStatusOptions } from '../../constants/tasks';
 import { TEXT_SELECT_COMPONENT } from '../../constants/custom-form-field';
 import CustomTable, { CustomTableColumnType } from '../../components/common/CustomTable';
 import UserPermissionPage from '../../components/common/UserPermissionPage';
-import { APP_DELETE_TASKS, APP_EDIT_TASKS } from '../../constants/user-roles';
+import { APP_ADMIN, APP_DELETE_TASKS, APP_EDIT_TASKS } from '../../constants/user-roles';
+import { IconButton } from '@mui/material';
+import { ActionLayoutContainer, InformationLayoutDrawerContainer } from '../../components/tasks/TasksDetatilsWrapper';
 
-interface TasksDetailsProps {}
+interface TasksDetailsProps { }
 
 const TasksDetails: React.FunctionComponent<TasksDetailsProps> = () => {
   const appTheme = useTheme();
@@ -48,6 +51,20 @@ const TasksDetails: React.FunctionComponent<TasksDetailsProps> = () => {
   const [isOpenDeleteTasksModal, setIsOpenDeleteTasksModal] = React.useState<boolean>(false);
 
   const [tasksFilters, setTasksFilter] = React.useState<{ limit: number; offset: number }>({ limit: 10, offset: 0 });
+
+  const [screenWidth, setScreenWidth] = React.useState<number>(window.innerWidth);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.screen.width);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const tasksQuery = useQuery<TasksType>({
     queryKey: ['tasksByIdQuery', taskId],
@@ -227,89 +244,97 @@ const TasksDetails: React.FunctionComponent<TasksDetailsProps> = () => {
       )}
 
       <Typography variant='h3' color={appTheme.palette.primary.main}>
+        <IconButton sx={{ mr: 2 }} onClick={() => navigate('/tasks')}><ArrowBackIcon /></IconButton>
         Tasks Details
       </Typography>
 
       <Grid item xs={12} container gap={3} sx={{ mt: 2, height: '80vh' }}>
-        <Grid item xs={7}>
-          <Grid item xs={12} sx={{ my: 2 }}>
-            <UserPermissionPage roles={[APP_EDIT_TASKS]} showNoAccessMessage={false}>
-              <Button onClick={toggleAddEditTasksModal} variant='contained' startIcon={<EditIcon />}>
-                Edit
-              </Button>
-            </UserPermissionPage>
-            <UserPermissionPage roles={[APP_DELETE_TASKS]} showNoAccessMessage={false}>
-              <Button onClick={toggleDeleteTasksModal} variant='contained' color='error' startIcon={<DeleteIcon />} sx={{ ml: 2 }}>
-                Delete
-              </Button>
-            </UserPermissionPage>
-          </Grid>
 
-          <Typography component='div' variant='fontSemiBold14' color={appTheme.palette.primary.main} sx={{ pt: 5 }}>
-            Title:
-          </Typography>
-          <Typography component='div' variant='fontSemiBold18' color={appTheme.palette.primary.main} sx={{ pt: 1 }}>
-            {tasksQuery.data?.title}
-          </Typography>
-
-          <Typography component='div' variant='fontSemiBold12' color={appTheme.palette.primary.main} sx={{ pt: 5 }}>
-            Description:
-          </Typography>
-          <Typography component='div' variant='fontSemiBold18' color={appTheme.palette.primary.main} sx={{ pt: 1 }}>
-            {tasksQuery.data?.descriptions || 'NA'}
-          </Typography>
-
-          <Divider sx={{ my: 5 }} />
-
-          <Typography component='div' variant='fontSemiBold12' color={appTheme.palette.primary.main} sx={{ pt: 2 }}>
-            Activity:
-          </Typography>
-
-          <Paper elevation={1} sx={{ my: 3 }}>
-            <CustomTable
-              columns={columnDefs}
-              tableSize='medium'
-              customStyles={{ color: appTheme.palette.primary.main }}
-              data={tasksLogsQuery.data?.data || []}
-              count={tasksLogsQuery.data?.count || 0}
-              page={tasksFilters.offset}
-              handleChangePage={handleChangePage}
-              rowsPerPage={tasksFilters.limit}
-              handleChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </Paper>
-        </Grid>
-
-        <Grid item xs={4} gap={1} container justifyContent='space-between' sx={{ borderLeft: '1px solid', borderColor: appTheme.palette.customColor.stroke, px: 3 }}>
-          <Grid item xs={12}>
-            <Grid item xs={12}>
-              <FormFields {...statusFormField} />
+        <ActionLayoutContainer isLowerScreenWidth={screenWidth < 500}>
+          <>
+            <Grid item xs={12} sx={{ my: 2 }}>
+              <UserPermissionPage roles={[APP_ADMIN, APP_EDIT_TASKS]} showNoAccessMessage={false}>
+                <Button onClick={toggleAddEditTasksModal} variant='contained' startIcon={<EditIcon />}>
+                  Edit
+                </Button>
+              </UserPermissionPage>
+              <UserPermissionPage roles={[APP_ADMIN, APP_DELETE_TASKS]} showNoAccessMessage={false}>
+                <Button onClick={toggleDeleteTasksModal} variant='contained' color='error' startIcon={<DeleteIcon />} sx={{ ml: 2 }}>
+                  Delete
+                </Button>
+              </UserPermissionPage>
             </Grid>
-            <Grid item xs={12}>
-              <FormFields {...assigneeFormField} />
-            </Grid>
-            <Grid item xs={12}>
-              <FormFields {...reporterFormField} />
-            </Grid>
-          </Grid>
 
-          <Grid item xs={12} sx={{ mt: 'auto' }}>
-            <Divider />
-
-            <Typography sx={{ pt: 2 }} variant='fontReg12' component='div' color={appTheme.palette.primary.main}>
-              Created
-              <Typography sx={{ pl: 1 }} variant='fontSemiBold14'>
-                {DateTime.fromJSDate(new Date(tasksQuery.data?.createdAt!)).toFormat('dd MMMM, yyyy hh:mm a')}
-              </Typography>
+            <Typography component='div' variant='fontSemiBold14' color={appTheme.palette.primary.main} sx={{ pt: 5 }}>
+              Title:
             </Typography>
-            <Typography sx={{ pt: 2 }} variant='fontReg12' component='div' color={appTheme.palette.primary.main}>
-              Updated
-              <Typography sx={{ pl: 1 }} variant='fontSemiBold14'>
-                {DateTime.fromJSDate(new Date(tasksQuery.data?.updatedAt!)).toFormat('dd MMMM, yyyy hh:mm a')}
-              </Typography>
+            <Typography component='div' variant='fontSemiBold18' color={appTheme.palette.primary.main} sx={{ pt: 1 }}>
+              {tasksQuery.data?.title}
             </Typography>
-          </Grid>
-        </Grid>
+
+            <Typography component='div' variant='fontSemiBold12' color={appTheme.palette.primary.main} sx={{ pt: 5 }}>
+              Description:
+            </Typography>
+            <Typography component='div' variant='fontSemiBold18' color={appTheme.palette.primary.main} sx={{ pt: 1 }}>
+              {tasksQuery.data?.descriptions || 'NA'}
+            </Typography>
+
+            <Divider sx={{ my: 5 }} />
+
+            <Typography component='div' variant='fontSemiBold12' color={appTheme.palette.primary.main} sx={{ pt: 2 }}>
+              Activity:
+            </Typography>
+
+            <Paper elevation={1} sx={{ my: 3 }}>
+              <CustomTable
+                columns={columnDefs}
+                tableSize='medium'
+                customStyles={{ color: appTheme.palette.primary.main }}
+                data={tasksLogsQuery.data?.data || []}
+                count={tasksLogsQuery.data?.count || 0}
+                page={tasksFilters.offset}
+                handleChangePage={handleChangePage}
+                rowsPerPage={tasksFilters.limit}
+                handleChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </Paper>
+
+          </>
+        </ActionLayoutContainer>
+
+        <InformationLayoutDrawerContainer isLowerScreenWidth={screenWidth < 500}>
+          <>
+            <Grid item xs={12}>
+              <Grid item xs={12}>
+                <FormFields {...statusFormField} />
+              </Grid>
+              <Grid item xs={12}>
+                <FormFields {...assigneeFormField} />
+              </Grid>
+              <Grid item xs={12}>
+                <FormFields {...reporterFormField} />
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 'auto' }}>
+              <Divider />
+
+              <Typography sx={{ pt: 2 }} variant='fontReg12' component='div' color={appTheme.palette.primary.main}>
+                Created
+                <Typography sx={{ pl: 1 }} variant='fontSemiBold14'>
+                  {DateTime.fromJSDate(new Date(tasksQuery.data?.createdAt!)).toFormat('dd MMMM, yyyy hh:mm a')}
+                </Typography>
+              </Typography>
+              <Typography sx={{ pt: 2 }} variant='fontReg12' component='div' color={appTheme.palette.primary.main}>
+                Updated
+                <Typography sx={{ pl: 1 }} variant='fontSemiBold14'>
+                  {DateTime.fromJSDate(new Date(tasksQuery.data?.updatedAt!)).toFormat('dd MMMM, yyyy hh:mm a')}
+                </Typography>
+              </Typography>
+            </Grid>
+          </>
+        </InformationLayoutDrawerContainer>
+
       </Grid>
     </Container>
   );

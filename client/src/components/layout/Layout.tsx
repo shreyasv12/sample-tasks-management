@@ -1,21 +1,44 @@
 /** @format */
 
 import * as React from 'react';
-import { Navigate, Outlet, useLocation, Location } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Navigate, Outlet, useLocation, Location, useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useQuery } from '@tanstack/react-query';
+
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+
 import { UserSessionContext } from '../../context/UserSession';
-import { getUserSession } from '../../utils/user-session';
+
 import { fetchUserLoggedInInfo } from '../../services/login';
 
-interface LayoutProps {}
+import { getUserSession } from '../../utils/user-session';
+import _ from 'underscore';
+
+interface LayoutProps { }
 
 const Layout: React.FunctionComponent<LayoutProps> = () => {
   const location: Location = useLocation();
+  const navigate = useNavigate();
 
-  const { userSession, handleUpdateUserSession } = React.useContext(UserSessionContext);
+  const { userSession, handleUpdateUserSession, handleClearUserSession } = React.useContext(UserSessionContext);
+
+  const getUserDisplay = () => {
+    const userName: string[] = userSession.username?.split(' ') || [''];
+    return `${_.get(userName, ['0'], '')?.slice(0, 1)}${_.get(userName, ['1'], '')?.slice(0, 1) || ''}`;
+  };
+
+  const handleClickLogout = () => {
+    handleClearUserSession();
+    navigate('/login');
+  };
 
   useQuery({
     queryKey: ['fetchUserSession', userSession.sessionId],
@@ -32,13 +55,45 @@ const Layout: React.FunctionComponent<LayoutProps> = () => {
 
   return (
     <Box sx={{ padding: '0 !important', height: 'calc(100% - 80px)' }}>
-      <Box sx={{ display: 'flex', padding: 0 }}>
-        <CssBaseline />
-        <Box component='main' sx={{ flex: 1, flexGrow: 1, padding: '0 !important' }}>
-          <Outlet />
+      <CssBaseline />
+      <AppBar component="nav">
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
+            Tasks Management
+          </Typography>
+          <Grid item xs='auto' alignItems="center" gap={2}>
+            <Avatar sx={{ textTransform: 'uppercase', display: { xs: 'none', md: 'flex' } }}>
+              {getUserDisplay()}
+            </Avatar>
+            <Typography
+              textTransform='capitalize'
+              variant='fontSemiBold18'
+              component='div'
+              sx={{
+                marginRight: '5px',
+                display: 'inline-block',
+                width: '120px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden !important',
+                textOverflow: 'ellipsis',
+              }}>
+              {userSession.username}
+            </Typography>
+          </Grid>
+          <Grid item xs="auto">
+            <IconButton onClick={handleClickLogout}><PowerSettingsNewIcon /></IconButton>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+      <Box component="main" sx={{ p: 3 }}>
+        <Toolbar />
 
-          {location.pathname === '/' && <Navigate to='/tasks' />}
-        </Box>
+        <Outlet />
+        {location.pathname === '/' && <Navigate to='/tasks' />}
       </Box>
     </Box>
   );
