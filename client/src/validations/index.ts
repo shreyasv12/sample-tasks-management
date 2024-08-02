@@ -1,3 +1,5 @@
+/** @format */
+
 import Joi from 'joi';
 import _ from 'lodash';
 
@@ -6,7 +8,7 @@ export const validateJoiObjectSchema = (schema: Joi.Schema, data: any, options: 
   console.log('ERRORDDDD validateJoiObjectSchema', joiErrors, data);
   const errors = {};
 
-  joiErrors.error?.details?.forEach(item => {
+  joiErrors.error?.details?.forEach((item) => {
     if (item.path && item.path?.length >= 0) {
       _.update(errors, item.path.join('.'), () => {
         return item?.message;

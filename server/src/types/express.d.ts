@@ -1,8 +1,7 @@
-import { UserInfoType } from './user';
-import { Request } from 'express';
+/** @format */
 
 declare namespace Express {
   export interface Request {
-    userInfo?: any
+    userInfo?: any;
   }
 }

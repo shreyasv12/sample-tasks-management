@@ -30,16 +30,16 @@ const AppWrapper: React.FunctionComponent<AppProps> = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={appTheme}>
-            <CustomToastContext>
-              <HashRouter>
-                <UserSessionProvider>
-                  <HomeApp />
-                  <InitialComponent />
-                </UserSessionProvider>
-              </HashRouter>
-            </CustomToastContext>
-          </ThemeProvider>
+        <ThemeProvider theme={appTheme}>
+          <CustomToastContext>
+            <HashRouter>
+              <UserSessionProvider>
+                <HomeApp />
+                <InitialComponent />
+              </UserSessionProvider>
+            </HashRouter>
+          </CustomToastContext>
+        </ThemeProvider>
       </StyledEngineProvider>
     </QueryClientProvider>
   );

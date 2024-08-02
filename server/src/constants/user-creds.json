@@ -1,16 +1,14 @@
 [
   {
+    "userId": "122122-1212-12321",
     "username": "Test1",
     "password": "980d131d937a661051ca12c5197c78d54e2970a508ad9343ad6512c8e41fd5cd",
-    "roles": [
-      "ADMIN"
-    ]
+    "roles": ["ADMIN"]
   },
   {
+    "userId": "1239932-1212-99949606",
     "username": "Test2",
     "password": "980d131d937a661051ca12c5197c78d54e2970a508ad9343ad6512c8e41fd5cd",
-    "roles": [
-      "CREATE_TASKS", "EDIT_TASKS", "UPDATE_TASKS"
-    ]
+    "roles": ["CREATE_TASKS", "EDIT_TASKS"]
   }
 ]

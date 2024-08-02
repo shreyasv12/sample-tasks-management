@@ -1,3 +1,5 @@
+/** @format */
+
 export interface CustomToastAlertType {
   id: number;
   message: string;

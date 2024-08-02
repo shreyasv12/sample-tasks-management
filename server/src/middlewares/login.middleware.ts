@@ -1,3 +1,5 @@
+/** @format */
+
 import Joi from 'joi';
 
 import type { Request, Response, NextFunction } from 'express';

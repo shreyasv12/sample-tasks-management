@@ -1,3 +1,5 @@
+/** @format */
+
 import * as React from 'react';
 import * as _ from 'underscore';
 import { useNavigate } from 'react-router-dom';
@@ -22,9 +24,7 @@ import { submitLoginCreds } from '../../services/login';
 import { UserSessionContext } from '../../context/UserSession';
 import { CircularProgress, useTheme } from '@mui/material';
 
-interface LoginProps {
-
-}
+interface LoginProps {}
 
 const Login: React.FunctionComponent<LoginProps> = () => {
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
   const { handleUpdateUserSession } = React.useContext(UserSessionContext);
 
   const loginMutate = useMutation({
-    mutationFn: async ({ username, password }: { username: string, password: string }) => {
+    mutationFn: async ({ username, password }: { username: string; password: string }) => {
       const res = await submitLoginCreds(username, password);
       handleUpdateUserSession(res);
       navigate('/login-success');
@@ -66,12 +66,14 @@ const Login: React.FunctionComponent<LoginProps> = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ pt: '20vh' }}>
+    <Container maxWidth='sm' sx={{ pt: '20vh' }}>
       <Paper elevation={10}>
         <form onSubmit={handleSubmit}>
-          <Grid item xs={9} container alignItems="center" gap={5} sx={{ mx: 'auto', p: 5 }}>
+          <Grid item xs={9} container alignItems='center' gap={5} sx={{ mx: 'auto', p: 5 }}>
             <Grid item xs={12} sx={{ textAlign: 'center' }}>
-              <Typography variant='h4' color={appTheme.palette.primary.main}>Login</Typography>
+              <Typography variant='h4' color={appTheme.palette.primary.main}>
+                Login
+              </Typography>
             </Grid>
 
             <Grid item xs={12}>
@@ -95,17 +97,17 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                 helperText={errors.password}
                 InputProps={{
                   endAdornment: (
-                    <IconButton onClick={() => setIsPasswordVisible(prev => !prev)}>
+                    <IconButton onClick={() => setIsPasswordVisible((prev) => !prev)}>
                       {isPasswordVisible && <VisibilityIcon />}
                       {!isPasswordVisible && <VisibilityOffIcon />}
                     </IconButton>
-                  )
+                  ),
                 }}
               />
             </Grid>
 
             <Grid item xs={12} sx={{ textAlign: 'center' }}>
-              <Button type="submit" variant="contained">
+              <Button type='submit' variant='contained'>
                 {loginMutate.isPending && <CircularProgress sx={{ mr: 2 }} />}
                 {loginMutate.isPending ? 'Submitting...' : 'Submit'}
               </Button>

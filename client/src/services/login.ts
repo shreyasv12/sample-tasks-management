@@ -1,3 +1,5 @@
+/** @format */
+
 import AxiosInstance from './index';
 
 export const submitLoginCreds = async (username: string, password: string) => {
@@ -7,7 +9,7 @@ export const submitLoginCreds = async (username: string, password: string) => {
     data: {
       username,
       password,
-    }
+    },
   });
 
   return res.data || {};
@@ -19,6 +21,14 @@ export const fetchUserLoggedInInfo = async (sessionId: string) => {
     headers: {
       'x-api-key': sessionId,
     },
+  });
+
+  return res.data || {};
+};
+
+export const getAllUsers = async () => {
+  const res = await AxiosInstance({
+    url: '/users',
   });
 
   return res.data || {};

@@ -1,10 +1,12 @@
+/** @format */
+
 import _ from 'underscore';
 
 // types
 import type { NextFunction, Request, Response } from 'express';
 
 // services
-import { validationUserCreds, createUserSession } from '../services/login.service';
+import { validationUserCreds, createUserSession, getAllUsersService } from '../services/login.service';
 
 // utils
 import { internalServerErrorHttpExpection, invalidUserCredsHttpExpection } from '../utils/http-expections-errors';
@@ -20,14 +22,25 @@ export const loginController = async (req: Request, res: Response, next: NextFun
       next(invalidUserCredsHttpExpection());
     }
 
+    console.log('userInfouserInfo', userInfo);
+
     delete userInfo?.password;
 
     const userToken = await createUserSession(userInfo!);
 
     return res.send({
       sessionId: userToken,
-      message: 'Successfully loggedin'
+      message: 'Successfully loggedin',
     });
+  } catch (err: any) {
+    next(internalServerErrorHttpExpection(err?.message));
+  }
+};
+
+export const getAllUsersController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await getAllUsersService();
+    return res.send(users);
   } catch (err: any) {
     next(internalServerErrorHttpExpection(err?.message));
   }

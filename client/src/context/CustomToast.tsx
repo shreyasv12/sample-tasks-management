@@ -28,11 +28,11 @@ const CustomToastProvider: React.FC<CustomToastProviderProps> = (props) => {
   const [alerts, setAlerts] = React.useState<CustomToastAlertType[]>([]);
 
   const handleCleartAlerts = (alertItem: CustomToastAlertType) => {
-    setAlerts(prev => prev.filter(item => item.id !== alertItem.id));
+    setAlerts((prev) => prev.filter((item) => item.id !== alertItem.id));
   };
 
   const handleAddAlerts = (alertItem: CustomToastAlertType) => {
-    setAlerts(prev => prev.concat(alertItem));
+    setAlerts((prev) => prev.concat(alertItem));
   };
 
   const value = {

@@ -1,3 +1,5 @@
+/** @format */
+
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import express, { Express, NextFunction, Request, Response } from 'express';
@@ -5,18 +7,21 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import config from './config/config';
 
 import loginRoutes from './routes/login.route';
+import tasksRoutes from './routes/tasks.route';
 
 const app: Express = express();
 
-app.use(cors({
-  origin: config.appWhiteListDomains,
-  credentials: true, // access-control-allow-credentials:true
-}));
+app.use(
+  cors({
+    origin: config.appWhiteListDomains,
+    credentials: true, // access-control-allow-credentials:true
+  }),
+);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-function errorHandlers (err: any, req: Request, res: Response, next: NextFunction) {
+function errorHandlers(err: any, req: Request, res: Response, next: NextFunction) {
   if (!err.statusCode || err.statusCode === 500) {
     console.error('ERROR ', err);
   }
@@ -29,6 +34,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use(loginRoutes);
+app.use(tasksRoutes);
 
 app.use(errorHandlers);
 

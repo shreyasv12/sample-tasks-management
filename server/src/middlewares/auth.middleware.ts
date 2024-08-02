@@ -1,13 +1,16 @@
+/** @format */
+
 import _ from 'underscore';
 
 // Types
-import { UserInfoType } from '../types/user';
+import { UserInfoType, UserRolesType } from '../types/user';
 import { CustomRequest } from '../types/global';
 import { NextFunction, Response } from 'express';
 
 // utils
 import { verifyJWTToken } from '../utils/jwt';
-import { unauthorizedHttpExpection } from '../utils/http-expections-errors';
+import { forbiddenHttpExpection, unauthorizedHttpExpection } from '../utils/http-expections-errors';
+import { APP_ROLE_ADMIN } from '../constants/user-roles';
 
 export const authMiddleware = async (req: CustomRequest, res: Response, next: NextFunction) => {
   const apiKey = req.headers['x-api-key'] as string;
@@ -28,6 +31,16 @@ export const authMiddleware = async (req: CustomRequest, res: Response, next: Ne
   }
 
   req.user = userInfo as UserInfoType;
+
+  return next();
+};
+
+export const userRolesMiddleware = (roles: UserRolesType[]) => async (req: CustomRequest, res: Response, next: NextFunction) => {
+  const userRoles = req.user?.roles;
+
+  if (_.isEmpty(userRoles) || (!_.isEmpty(roles) && !userRoles?.some((item) => roles.includes(item) || item === APP_ROLE_ADMIN))) {
+    next(forbiddenHttpExpection());
+  }
 
   return next();
 };

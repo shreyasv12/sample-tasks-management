@@ -1,0 +1,13 @@
+/** @format */
+
+#add-edit-tasks-modal {
+  .status-container {
+    .MuiFormLabel-root {
+      display: none !important;
+    }
+
+    .hiddeErrorMessage {
+      display: none !important;
+    }
+  }
+}

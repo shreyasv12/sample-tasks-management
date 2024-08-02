@@ -14,6 +14,8 @@ import CustomLoading from './components/common/CustomLoading';
 const Layout = lazy(() => import('./components/layout/Layout'));
 
 const Login = lazy(() => import('./pages/login/login'));
+const Tasks = lazy(() => import('./pages/tasks/Tasks'));
+const TasksDetails = lazy(() => import('./pages/tasks/TasksDetails'));
 const LoginSuccess = lazy(() => import('./pages/login/LoginSuccess'));
 
 const Page404 = lazy(() => import('./pages/Page404'));
@@ -54,6 +56,22 @@ export const NavRoutes: RouteObject[] = [
       </Suspense>
     ),
     children: [
+      {
+        path: '/tasks',
+        element: (
+          <Suspense fallback={<CustomLoading />}>
+            <Tasks />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/tasks/:taskId',
+        element: (
+          <Suspense fallback={<CustomLoading />}>
+            <TasksDetails />
+          </Suspense>
+        ),
+      },
       {
         path: '*',
         element: (

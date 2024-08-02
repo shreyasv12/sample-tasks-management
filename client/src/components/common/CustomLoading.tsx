@@ -1,11 +1,11 @@
+/** @format */
+
 import * as React from 'react';
 
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 
-interface CustomLoadingProps {
-
-}
+interface CustomLoadingProps {}
 
 const CustomLoading: React.FunctionComponent<CustomLoadingProps> = () => {
   return (

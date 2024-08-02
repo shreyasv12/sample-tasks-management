@@ -1,3 +1,5 @@
+/** @format */
+
 // types
 import { UserInfoType } from '../types/user';
 
@@ -10,7 +12,16 @@ import UserData from './../constants/user-creds.json';
 
 export const validationUserCreds = async (username: string, password: string): Promise<UserInfoType | undefined> => {
   const hashPassword = await getPasswordHash(password);
+
+  console.log('scasckjansdkcjasdnkjcs', hashPassword, username);
+
   return (UserData as any).find((item: UserInfoType) => item.username === username && item.password === hashPassword);
+};
+
+export const getAllUsersService = async () => {
+  return (UserData as any).map((item: UserInfoType) => {
+    return { userId: item.userId, username: item.username };
+  });
 };
 
 export const createUserSession = async (userInfo: UserInfoType) => {

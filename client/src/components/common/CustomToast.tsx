@@ -10,7 +10,7 @@ import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 import { CustomToastAlertType } from '../../types/custom-toast';
 import { CustomToastContext } from '../../context/CustomToast';
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert (props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 

@@ -1,5 +1,6 @@
-export const ADMIN = 'ADMIN';
-export const CREATE_TASKS = 'CREATE_TASKS';
-export const EDIT_TASKS = 'EDIT_TASKS';
-export const UPDATE_TASKS = 'UPDATE_TASKS';
-export const DELETE_TASKS = 'DELETE_TASKS';
+/** @format */
+
+export const APP_ROLE_ADMIN = 'ADMIN';
+export const APP_ROLE_CREATE_TASKS = 'CREATE_TASKS';
+export const APP_ROLE_EDIT_TASKS = 'EDIT_TASKS';
+export const APP_ROLE_DELETE_TASKS = 'DELETE_TASKS';
