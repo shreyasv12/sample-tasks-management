@@ -15,7 +15,7 @@ export const validationUserCreds = async (username: string, password: string): P
 
   console.log('scasckjansdkcjasdnkjcs', hashPassword, username);
 
-  return (UserData as any).find((item: UserInfoType) => item.username === username && item.password === hashPassword);
+  return (JSON.parse(JSON.stringify(UserData)) as any).find((item: UserInfoType) => item.username === username && item.password === hashPassword);
 };
 
 export const getAllUsersService = async () => {

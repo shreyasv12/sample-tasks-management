@@ -1,14 +1,35 @@
-# Release Notes
+#### Setup
 
-### Overview
-A task management system helps teams and individuals organize, prioritize, and track tasks. It often includes features like task creation, assignmen, status updates, and collaboration tools.
+Clone the Repo from the Github
 
-### Key Features
+### External Dependency
 
-## Task Creation:
-Users can create tasks with titles, descriptions, and priorities.
-Tasks can be assigned to specific team members.
+* Mongodb Database
 
-## Task Status Updates:
-Tasks have status options like Todo, In Progress, Done, and On Hold.
-Status can be updated as the task progresses.
+Please make sure we have already setup the databse before starting the server
+
+### Client Setup
+After clone the repo, goto `client` folder
+
+## Steps:
+
+* Install the Client Dependency by running command
+> npm install
+
+* Add env variables by refering from .env.example file
+
+* For run the client, exec command
+> npm run start
+
+### Sever Setup
+
+## Steps:
+
+* Install the Server Dependency by running command
+> npm install
+
+* Add env variables by refering from .env.example file
+
+* For starting the server, exec command
+> npm run start:dev
+
